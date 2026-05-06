@@ -20,6 +20,8 @@ libassert = library(
     pic : true,
     dependencies : [cpptrace_dep],
     cpp_args : ['-DLIBASSERT_SAFE_COMPARISONS'],
+    build_rpath : '$ORIGIN',
+    install_rpath : '$ORIGIN',
 )
 
 install_subdir(
