@@ -4,6 +4,8 @@ cpptrace = subproject('cpptrace')
 cpptrace_dep = cpptrace.get_variable('cpptrace_dep')
 cpptrace_lib = cpptrace.get_variable('cpptrace_lib')
 
+flags = ['-DLIBASSERT_SAFE_COMPARISONS']
+
 libassert = library(
     'libassert',
     'src/analysis.cpp',
@@ -19,7 +21,7 @@ libassert = library(
     install : true,
     pic : true,
     dependencies : [cpptrace_dep],
-    cpp_args : ['-DLIBASSERT_SAFE_COMPARISONS'],
+    cpp_args : flags,
     build_rpath : '$ORIGIN',
     install_rpath : '$ORIGIN',
 )
@@ -31,10 +33,11 @@ install_subdir(
 )
 
 pkg = import('pkgconfig')
-pkg.generate(libassert)
+pkg.generate(libassert, extra_cflags : flags)
 
 libassert_dep = declare_dependency(
     include_directories : 'include',
     link_with : libassert,
     dependencies : [cpptrace_dep],
+    compile_args : flags,
 )
